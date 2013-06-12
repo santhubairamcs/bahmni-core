@@ -28,7 +28,7 @@ import java.util.List;
  * the Drug resource.
  */
 @Controller
-@RequestMapping(value = "/rest/v1/bahmnicore")
+@RequestMapping(value = "/rest/v1/bahmnicore/patient")
 public class BahmniPatientController extends BaseRestController {
     private static Logger logger = Logger.getLogger(BahmniPatientController.class);
     private BahmniPatientService bahmniPatientService;
@@ -39,7 +39,7 @@ public class BahmniPatientController extends BaseRestController {
         this.bahmniPatientService = bahmniPatientService;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/patient")
+    @RequestMapping(method = RequestMethod.POST)
     @WSDoc("Save New Patient")
     @ResponseBody
     public Object createNewPatient(@RequestBody SimpleObject post, HttpServletResponse response) {
@@ -86,7 +86,7 @@ public class BahmniPatientController extends BaseRestController {
         return obj;
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/patient/{patientUuid}")
+    @RequestMapping(method = RequestMethod.POST, value = "/{patientUuid}")
     @WSDoc("Update existing patient")
     @ResponseBody
     public Object updatePatient(@PathVariable("patientUuid") String patientUuid, @RequestBody SimpleObject post,

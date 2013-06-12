@@ -7,11 +7,6 @@ public class BahmniName {
 	
 	private String familyName;
 
-    public BahmniName(String givenName, String familyName) {
-        this.givenName = givenName;
-        this.familyName = familyName;
-    }
-
     public BahmniName(LinkedHashMap post) {
 		SimpleObjectExtractor extractor = new SimpleObjectExtractor(post);
 		givenName = extractor.extract("givenName");
