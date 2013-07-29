@@ -59,14 +59,17 @@ public class OpenERPClient {
     }
 
     private void login() {
-        if (id == null || id.getClass() != Integer.class) {
+        if (id == null) {
             XmlRpcClient loginRpcClient = createRPCClient(host, port, "/xmlrpc/common");
             Vector params = new Vector();
             params.addElement(database);
             params.addElement(user);
             params.addElement(password);
 
-            id = executeRPC(loginRpcClient, params, "login");
+            Object loginId = executeRPC(loginRpcClient, params, "login");
+            if(loginId == null || loginId.getClass() != Integer.class)
+                throw new OpenERPException(String.format("Failed to login. The login id is : %s", loginId));
+            id = loginId;
         }
     }
 
