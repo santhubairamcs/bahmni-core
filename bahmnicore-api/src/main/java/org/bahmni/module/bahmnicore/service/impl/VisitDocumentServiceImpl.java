@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -58,21 +59,23 @@ public class VisitDocumentServiceImpl implements VisitDocumentService {
     }
 
     private void updateEncounter(Encounter encounter, Date encounterDateTime, List<Document> documents) {
+        LinkedHashSet<Obs> observations = new LinkedHashSet<>(encounter.getAllObs());
         for (Document document : documents) {
             Concept testConcept = conceptService.getConceptByUuid(document.getTestUuid());
 
-            Obs parentObservation = findOrCreateParentObs(encounter, encounterDateTime, testConcept, document.getObsUuid());
+            Obs parentObservation = findOrCreateParentObs(encounter, document.getObsDateTime(), testConcept, document.getObsUuid());
             parentObservation.setConcept(testConcept);
-            encounter.addObs(parentObservation);
+            observations.add(parentObservation);
 
             Concept imageConcept = conceptService.getConceptByName(DOCUMENT_OBS_GROUP_CONCEPT_NAME);
             if (document.isVoided()) {
                 voidDocumentObservation(encounter.getAllObs(), document.getObsUuid());
             } else if(document.getObsUuid() == null) {
                 String url = saveDocument(encounter, document);
-                parentObservation.addGroupMember(newObs(encounterDateTime, encounter, imageConcept, url));
+                parentObservation.addGroupMember(newObs(document.getObsDateTime(), encounter, imageConcept, url));
             }
         }
+        encounter.setObs(observations);
     }
 
     private Obs findOrCreateParentObs(Encounter encounter, Date observationDateTime, Concept testConcept, String obsUuid) {
