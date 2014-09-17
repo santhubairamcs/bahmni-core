@@ -60,7 +60,7 @@ public class AdminImportController extends BaseRestController {
 
             boolean skipValidation = true;
             return new FileImporter<EncounterRow>().importCSV(uploadedOriginalFileName, persistedUploadedFile,
-                    encounterPersister, EncounterRow.class, new MRSConnectionProvider(), username, skipValidation);
+                    encounterPersister, EncounterRow.class, new MRSConnectionProvider(), username);
         } catch (Exception e) {
             logger.error("Could not upload file", e);
             return false;
@@ -107,6 +107,7 @@ public class AdminImportController extends BaseRestController {
             SessionImplementor session = (SessionImpl) sessionFactory.openSession();
             return session.connection();
         }
+
 
     }
 
