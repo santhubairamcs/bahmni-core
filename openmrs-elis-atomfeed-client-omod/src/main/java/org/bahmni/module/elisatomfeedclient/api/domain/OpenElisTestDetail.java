@@ -21,6 +21,8 @@ public class OpenElisTestDetail {
     private String dateTime;
     private String status;
     private Boolean abnormal;
+    @JsonIgnore
+    private String uploadedFileName;
 
     @JsonIgnore
     public boolean isCancelled() {
