@@ -2734,4 +2734,10 @@
             VALUES ('encounterModifier.groovy.allowCaching', 'true', 'Allow Groovy Caching', 'e16605a1-266a-47cb-8385-d07742646640');
         </sql>
     </changeSet>
+    <changeSet id="bahmni-core-201412311601" author="Mujir">
+        <comment>Adding constraint on Orders table. 'Orders' 'concept_id' should match with a concept in 'Concept' table</comment>
+        <sql>
+            alter table orders add constraint order_concept_id foreign key (concept_id) references concept(concept_id);
+        </sql>
+    </changeSet>
 </databaseChangeLog>
