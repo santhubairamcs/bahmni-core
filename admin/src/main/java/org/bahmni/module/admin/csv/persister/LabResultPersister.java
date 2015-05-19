@@ -108,8 +108,11 @@ public class LabResultPersister implements EntityPersister<LabResultsRow> {
     }
 
     private boolean getAbnormality(Concept concept, String result) {
-        return Double.parseDouble(result) < ((ConceptNumeric)concept).getLowNormal()
-                || Double.parseDouble(result) > ((ConceptNumeric)concept).getHiNormal();
+        if (concept.getDatatype().getName().equals("Numeric")) {
+            return Double.parseDouble(result) < ((ConceptNumeric) concept).getLowNormal()
+                    || Double.parseDouble(result) > ((ConceptNumeric) concept).getHiNormal();
+        }
+        return false;
     }
 
 
