@@ -101,10 +101,17 @@ public class LabResultPersister implements EntityPersister<LabResultsRow> {
     private Obs getResultObs(LabResultRow labResultRow, TestOrder testOrder) {
         LabOrderResult labOrderResult = new LabOrderResult();
         labOrderResult.setResult(labResultRow.getResult());
+        labOrderResult.setAbnormal(getAbnormality(testOrder.getConcept(), labResultRow.getResult()));
         labOrderResult.setResultDateTime(testOrder.getDateActivated());
         Obs obs = labOrderResultMapper.map(labOrderResult, testOrder, testOrder.getConcept());
         return obs;
     }
+
+    private boolean getAbnormality(Concept concept, String result) {
+        return Double.parseDouble(result) < ((ConceptNumeric)concept).getLowNormal()
+                || Double.parseDouble(result) > ((ConceptNumeric)concept).getHiNormal();
+    }
+
 
     private Provider getProvider() {
         Collection<Provider> providers = providerService.getProvidersByPerson(userContext.getAuthenticatedUser().getPerson());

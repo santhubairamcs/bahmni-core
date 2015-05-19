@@ -59,7 +59,7 @@ public class LabResultPersisterIT extends BaseModuleWebContextSensitiveTest {
         String visitType = "LAB RESULT IMPORT VISIT";
         LabResultsRow labResultsRow = new LabResultsRow();
         labResultsRow.setPatientIdentifier("GAN200001").setTestDateString("2014-10-11").setVisitType(visitType);
-        labResultsRow.setTestResults(Arrays.asList(new LabResultRow().setTest("Urea Nitorgen").setResult("10")));
+        labResultsRow.setTestResults(Arrays.asList(new LabResultRow().setTest("Urea Nitorgen").setResult("2600.0")));
 
         Messages errorMessages = labResultPersister.persist(labResultsRow);
 
@@ -93,7 +93,8 @@ public class LabResultPersisterIT extends BaseModuleWebContextSensitiveTest {
         assertEquals(1, labOrderResults.size());
         LabOrderResult labOrderResult = labOrderResults.get(0);
         assertEquals("Urea Nitorgen", labOrderResult.getTestName());
-        assertEquals("10.0", labOrderResult.getResult());
+        assertTrue(labOrderResult.getAbnormal());
+        assertEquals("2600.0", labOrderResult.getResult());
         assertEquals(TestUtil.createDateTime("2014-10-11"), labOrderResult.getResultDateTime());
     }
 }
