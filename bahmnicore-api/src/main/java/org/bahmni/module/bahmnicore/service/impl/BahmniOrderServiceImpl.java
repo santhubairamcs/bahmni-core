@@ -30,37 +30,29 @@ public class BahmniOrderServiceImpl implements BahmniOrderService {
         this.bahmniObsService = bahmniObsService;
     }
 
-    @Override
-    public List<BahmniOrder> getLatestObservationsAndOrdersForOrderType(String patientUuid, List<Concept> concepts,
-                                                                        Integer numberOfVisits, List<String> obsIgnoreList, String orderTypeUuid, Boolean includeObs) {
+    public List<BahmniOrder> ordersForOrderType(String patientUuid, List<Concept> concepts, Integer numberOfVisits, List<String> obsIgnoreList, String orderTypeUuid, Boolean includeObs) {
         List<BahmniOrder> bahmniOrders = new ArrayList<>();
-        try {
-            List<Order> orders;
-            if(numberOfVisits == null || numberOfVisits ==0){
-               orders = orderService.getAllOrders(patientUuid, orderTypeUuid, null, null); 
-            }else {
-                orders = orderService.getAllOrdersForVisits(patientUuid, orderTypeUuid, numberOfVisits);
-            }
+        List<Order> orders;
+        if(numberOfVisits == null || numberOfVisits ==0){
+            orders = orderService.getAllOrders(patientUuid, orderTypeUuid, null, null);
+        }else {
+            orders = orderService.getAllOrdersForVisits(patientUuid, orderTypeUuid, numberOfVisits);
+        }
 
-            for (Order order : orders) {
-                Collection<BahmniObservation> latestObs = bahmniObsService.getLatest(patientUuid, concepts, null,
-                        obsIgnoreList, false, order);
-                BahmniOrder bahmniOrder = createBahmniOrder(order, latestObs, includeObs);
+        for (Order order : orders) {
+            Collection<BahmniObservation> obs = bahmniObsService.observationsFor(patientUuid, concepts, null, obsIgnoreList, false);
+            BahmniOrder bahmniOrder = createBahmniOrder(order, obs, includeObs);
 
-                bahmniOrders.add(bahmniOrder);
-            }
-        }catch (NullPointerException e){
-            log.error("Order Fields cannot be null");
+            bahmniOrders.add(bahmniOrder);
         }
         return bahmniOrders;
     }
 
-    @Override
-    public List<BahmniOrder> getLatestObservationsForOrder(String patientUuid, List<Concept> concepts, List<String> obsIgnoreList, String orderUuid){
+    public List<BahmniOrder> ordersForOrder(String patientUuid, List<Concept> concepts, List<String> obsIgnoreList, String orderUuid) {
         List<BahmniOrder> bahmniOrders = new ArrayList<>();
         Order order = orderService.getOrderByUuid(orderUuid);
-        Collection<BahmniObservation> latestObs = bahmniObsService.getLatest(patientUuid, concepts, null, obsIgnoreList, false, order);
-        BahmniOrder bahmniOrder = createBahmniOrder(order, latestObs, true);
+        Collection<BahmniObservation> obs = bahmniObsService.observationsFor(patientUuid, concepts, null, obsIgnoreList, false);
+        BahmniOrder bahmniOrder = createBahmniOrder(order, obs, true);
         bahmniOrders.add(bahmniOrder);
         return bahmniOrders;
     }

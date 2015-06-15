@@ -30,7 +30,7 @@ public class BahmniOrderController extends BaseRestController {
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody
-    public List<BahmniOrder> get(@RequestParam(value = "patientUuid", required = true) String patientUUID,
+    public List<BahmniOrder> get(@RequestParam(value = "patientUuid", required = true) String patientUuid,
                                  @RequestParam(value = "concept", required = true) List<String> rootConceptNames,
                                  @RequestParam(value = "orderTypeUuid", required = true) String orderTypeUuid,
                                  @RequestParam(value = "numberOfVisits", required = false) Integer numberOfVisits,
@@ -38,19 +38,19 @@ public class BahmniOrderController extends BaseRestController {
                                  @RequestParam(value = "includeObs", required = false, defaultValue ="true") boolean includeObs) {
 
         List<Concept> rootConcepts = getConcepts(rootConceptNames);
-        return bahmniOrderService.getLatestObservationsAndOrdersForOrderType(patientUUID, rootConcepts, numberOfVisits, obsIgnoreList, orderTypeUuid, includeObs);
+        return bahmniOrderService.ordersForOrderType(patientUuid, rootConcepts, numberOfVisits, obsIgnoreList, orderTypeUuid, includeObs);
     }
 
 
     @RequestMapping(method = RequestMethod.GET, params = {"orderUuid"})
     @ResponseBody
-    public List<BahmniOrder> get(@RequestParam(value = "patientUuid", required = true) String patientUUID,
+    public List<BahmniOrder> get(@RequestParam(value = "patientUuid", required = true) String patientUuid,
                                  @RequestParam(value = "concept", required = true) List<String> rootConceptNames,
                                  @RequestParam(value = "obsIgnoreList", required = false) List<String> obsIgnoreList,
                                  @RequestParam(value = "orderUuid", required = true) String orderUuid) {
 
         List<Concept> rootConcepts = getConcepts(rootConceptNames);
-        return bahmniOrderService.getLatestObservationsForOrder(patientUUID, rootConcepts, obsIgnoreList, orderUuid);
+        return bahmniOrderService.ordersForOrder(patientUuid, rootConcepts, obsIgnoreList, orderUuid);
     }
 
     private List<Concept> getConcepts(List<String> rootConceptNames) {
