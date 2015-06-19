@@ -113,8 +113,8 @@ public class ObsDaoImpl implements ObsDao {
     }
 
     @Override
-    public List<Obs> getObsFor(String patientUuid, List<String> conceptNames, Integer numberOfVisits, List<String> obsIgnoreList, Boolean filterOutOrderObs) {
-        return getObsFor(patientUuid,conceptNames,numberOfVisits,-1, OrderBy.DESC, obsIgnoreList, filterOutOrderObs, null);
+    public List<Obs> getObsFor(String patientUuid, List<String> conceptNames, Integer numberOfVisits, List<String> obsIgnoreList, Boolean filterOutOrderObs, Order order) {
+        return getObsFor(patientUuid,conceptNames,numberOfVisits,-1, OrderBy.DESC, obsIgnoreList, filterOutOrderObs, order);
     }
 
     public List<Obs> getLatestObsFor(String patientUuid, String conceptName, Integer numberOfVisits, Integer limit, List<String> obsIgnoreList, Boolean filterOutOrderObs, Order order) {

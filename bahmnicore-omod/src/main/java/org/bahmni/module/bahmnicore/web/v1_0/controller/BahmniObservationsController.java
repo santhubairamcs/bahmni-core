@@ -54,7 +54,7 @@ public class BahmniObservationsController extends BaseRestController {
         } else if (ObjectUtils.equals(scope, INITIAL)) {
             return bahmniObsService.getInitial(patientUUID, rootConcepts, numberOfVisits, obsIgnoreList, filterObsWithOrders);
         } else {
-            return bahmniObsService.observationsFor(patientUUID, rootConcepts, numberOfVisits, obsIgnoreList, filterObsWithOrders);
+            return bahmniObsService.observationsFor(patientUUID, rootConcepts, numberOfVisits, obsIgnoreList, filterObsWithOrders, null);
         }
 
     }

@@ -13,7 +13,7 @@ public interface BahmniObsService {
     public List<Obs> getObsForPerson(String identifier);
     public Collection<BahmniObservation> getInitial(String patientUuid, Collection<Concept> conceptNames,Integer numberOfVisits,List<String> obsIgnoreList, Boolean filterOutOrderObs);
     Collection<BahmniObservation> getInitialObsByVisit(Visit visit, List<Concept> rootConcepts, List<String> obsIgnoreList, Boolean filterObsWithOrders);
-    public Collection<BahmniObservation> observationsFor(String patientUuid, Collection<Concept> concepts, Integer numberOfVisits, List<String> obsIgnoreList, Boolean filterOutOrderObs);
+    public Collection<BahmniObservation> observationsFor(String patientUuid, Collection<Concept> concepts, Integer numberOfVisits, List<String> obsIgnoreList, Boolean filterOutOrderObs, Order order);
     public Collection<BahmniObservation> getLatest(String patientUuid, Collection<Concept> conceptNames,Integer numberOfVisits, List<String> obsIgnoreList, Boolean filterOutOrderObs, Order order);
     public List<Concept> getNumericConceptsForPerson(String personUUID);
     public Collection<BahmniObservation> getLatestObsForConceptSetByVisit(String patientUuid, String conceptName, Integer visitId);
