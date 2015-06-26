@@ -34,7 +34,7 @@ public class BahmniEncounterTransactionServiceImpl implements BahmniEncounterTra
     private EmrEncounterService emrEncounterService;
     private EncounterTransactionMapper encounterTransactionMapper;
     private LocationBasedEncounterTypeIdentifier locationBasedEncounterTypeIdentifier;
-    private EncounterDataPreSaveCommand encounterDataPreSaveCommand;
+    private List<EncounterDataPreSaveCommand> encounterDataPreSaveCommand;
     private List<EncounterDataPostSaveCommand> encounterDataPostSaveCommands;
     private BahmniEncounterTransactionMapper bahmniEncounterTransactionMapper;
     private VisitService visitService;
@@ -43,7 +43,7 @@ public class BahmniEncounterTransactionServiceImpl implements BahmniEncounterTra
     private ProviderService providerService;
 
     public BahmniEncounterTransactionServiceImpl(EncounterService encounterService, EmrEncounterService emrEncounterService, EncounterTransactionMapper encounterTransactionMapper,
-                                                 LocationBasedEncounterTypeIdentifier locationBasedEncounterTypeIdentifier, EncounterDataPreSaveCommand encounterDataPreSaveCommand, List<EncounterDataPostSaveCommand> encounterDataPostSaveCommands,
+                                                 LocationBasedEncounterTypeIdentifier locationBasedEncounterTypeIdentifier, List<EncounterDataPreSaveCommand> encounterDataPreSaveCommand, List<EncounterDataPostSaveCommand> encounterDataPostSaveCommands,
                                                  BahmniEncounterTransactionMapper bahmniEncounterTransactionMapper, VisitService visitService, PatientService patientService, LocationService locationService, ProviderService providerService) {
 
         this.encounterService = encounterService;
@@ -63,7 +63,9 @@ public class BahmniEncounterTransactionServiceImpl implements BahmniEncounterTra
     public BahmniEncounterTransaction save(BahmniEncounterTransaction bahmniEncounterTransaction, Patient patient, Date visitStartDate, Date visitEndDate) {
         // TODO : Mujir - map string VisitType to the uuids and set on bahmniEncounterTransaction object
         setEncounterType(bahmniEncounterTransaction);
-        encounterDataPreSaveCommand.update(bahmniEncounterTransaction);
+        for (EncounterDataPreSaveCommand saveCommand : encounterDataPreSaveCommand) {
+            saveCommand.update(bahmniEncounterTransaction);
+        }
         VisitIdentificationHelper visitIdentificationHelper = new VisitIdentificationHelper(visitService);
         bahmniEncounterTransaction = new RetrospectiveEncounterTransactionService(visitIdentificationHelper).updatePastEncounters(bahmniEncounterTransaction, patient, visitStartDate, visitEndDate);
 
