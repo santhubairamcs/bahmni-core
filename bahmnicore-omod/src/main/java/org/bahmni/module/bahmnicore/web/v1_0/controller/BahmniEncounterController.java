@@ -2,7 +2,7 @@ package org.bahmni.module.bahmnicore.web.v1_0.controller;
 
 import org.bahmni.module.bahmnicore.contract.encounter.data.ConceptData;
 import org.bahmni.module.bahmnicore.contract.encounter.response.EncounterConfigResponse;
-import org.openmrs.*;
+import org.openmrs.Encounter;
 import org.openmrs.api.ConceptService;
 import org.openmrs.api.EncounterService;
 import org.openmrs.api.OrderService;
@@ -123,6 +123,14 @@ public class BahmniEncounterController extends BaseRestController {
         }
 
         return bahmniEncounterTransactions;
+    }
+
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{uuid}")
+    @ResponseBody
+    public void delete(@PathVariable("uuid") String uuid, String reason){
+        BahmniEncounterTransaction bahmniEncounterTransaction = get(uuid,false);
+        bahmniEncounterTransaction.setReason(reason);
+        bahmniEncounterTransactionService.delete(bahmniEncounterTransaction);
     }
 
     @RequestMapping(method = RequestMethod.POST)
