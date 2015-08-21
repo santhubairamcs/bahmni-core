@@ -25,7 +25,8 @@ public class BahmniPersonAttribute {
             value = (String) extractValue1.get("display");
         }
 	}
-	
+
+
 	public String getPersonAttributeUuid() {
 		return personAttributeUuid;
 	}
@@ -33,4 +34,8 @@ public class BahmniPersonAttribute {
 	public String getValue() {
 		return value;
 	}
+
+    public void setValue(String value) {
+        this.value = value;
+    }
 }

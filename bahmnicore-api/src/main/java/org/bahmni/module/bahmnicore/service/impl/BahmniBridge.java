@@ -2,12 +2,13 @@ package org.bahmni.module.bahmnicore.service.impl;
 
 import org.bahmni.module.bahmnicore.dao.ObsDao;
 import org.bahmni.module.bahmnicore.dao.OrderDao;
+import org.bahmni.module.bahmnicore.model.BahmniPersonAttribute;
 import org.bahmni.module.bahmnicore.service.BahmniDrugOrderService;
 import org.joda.time.LocalDate;
 import org.joda.time.Years;
-import org.openmrs.DrugOrder;
-import org.openmrs.Obs;
+import org.openmrs.*;
 import org.openmrs.api.PatientService;
+import org.openmrs.api.PersonService;
 import org.openmrs.api.context.Context;
 import org.openmrs.module.emrapi.encounter.OrderMapper;
 import org.openmrs.module.emrapi.encounter.domain.EncounterTransaction;
@@ -33,13 +34,15 @@ public class BahmniBridge {
 
     private ObsDao obsDao;
     private PatientService patientService;
+    private PersonService personService;
     private OrderDao orderDao;
     private BahmniDrugOrderService bahmniDrugOrderService;
 
     OrderMapper drugOrderMapper = new OrderMapper1_11();
+
     /**
      * Factory method to construct objects of <code>BahmniBridge</code>.
-     *
+     * <p/>
      * This is provided so that <code>BahmniBridge</code> can be called by extensions without having to use the
      * Spring application context. Prefer using this as opposed to the constructor.
      *
@@ -59,8 +62,9 @@ public class BahmniBridge {
 
     /**
      * Set patient uuid. This will be used by methods that require the patient to perform its operations.
-     *
+     * <p/>
      * Setting patient uuid might be mandatory depending on the operation you intend to perform using the bridge.
+     *
      * @param patientUuid
      * @return
      */
@@ -70,9 +74,25 @@ public class BahmniBridge {
     }
 
     /**
-     * Set visit uuid. This will be used by methods that require a visit to perform its operations.
+     * Update patient attribute type.
      *
+     * @param attributeType
+     * @return
+     */
+    public void updatePatientAttributeType(String attributeType) {
+        Patient patient = patientService.getPatientByUuid(patientUuid);
+        PersonAttribute personAttribute = patient.getAttribute(attributeType);
+        Obs personAttributeLatestValue = this.latestObs(attributeType);
+        if (personAttributeLatestValue != null) {
+            personAttribute.setValue(personAttributeLatestValue.getValueText());
+        }
+    }
+
+    /**
+     * Set visit uuid. This will be used by methods that require a visit to perform its operations.
+     * <p/>
      * Setting visit uuid might be mandatory depending on the operation you intend to perform using the bridge.
+     *
      * @param visitUuid
      * @return
      */
@@ -120,14 +140,15 @@ public class BahmniBridge {
 
     /**
      * Retrieve active Drug orders for <code>patientUuid<code/>
+     *
      * @return
      */
     public List<EncounterTransaction.DrugOrder> activeDrugOrdersForPatient() {
         List<DrugOrder> activeOpenMRSDrugOrders = bahmniDrugOrderService.getActiveDrugOrders(patientUuid);
         List<EncounterTransaction.DrugOrder> drugOrders = new ArrayList<>();
-        for(DrugOrder activeOpenMRSDrugOrder : activeOpenMRSDrugOrders){
+        for (DrugOrder activeOpenMRSDrugOrder : activeOpenMRSDrugOrders) {
             EncounterTransaction.DrugOrder drugOrder = drugOrderMapper.mapDrugOrder(activeOpenMRSDrugOrder);
-            if((isNotScheduled(drugOrder) || hasScheduledOrderBecameActive(drugOrder)) && isNotStopped(drugOrder)){
+            if ((isNotScheduled(drugOrder) || hasScheduledOrderBecameActive(drugOrder)) && isNotStopped(drugOrder)) {
                 drugOrders.add(drugOrder);
             }
         }
