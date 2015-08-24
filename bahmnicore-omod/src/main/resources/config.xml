@@ -110,6 +110,7 @@
         ObsRelationshipType.hbm.xml
         LocationEncounterTypeMap.hbm.xml
         BahmniConfig.hbm.xml
+        BahmniFormElement.hbm.xml
     </mappingFiles>
     <!-- Internationalization -->
     <!-- All message codes should start with moduleId.* -->

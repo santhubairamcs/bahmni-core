@@ -3097,4 +3097,72 @@
         <sqlFile path="V1_91_PatientSearchSql.sql"/>
     </changeSet>
 
+    <changeSet id="bahmniconfig-2015080021555" author="Mihir">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="bahmni_form_element"/>
+            </not>
+        </preConditions>
+        <comment>Create form element config table</comment>
+        <createTable tableName="bahmni_form_element">
+            <column autoIncrement="true" name="bahmni_form_element_id" type="int">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="concept_set_id" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="multiple" type="int"/>
+            <column name="concise_text" type="boolean"/>
+            <column name="duration_required" type="boolean"/>
+            <column name="multi_select" type="boolean"/>
+            <column name="compute_drugs" type="boolean"/>
+            <column name="allow_add_more" type="boolean"/>
+            <column name="free_text_autocomplete" type="boolean"/>
+            <column name="grid" type="boolean"/>
+            <column name="button_select" type="boolean"/>
+            <column name="required" type="boolean"/>
+            <column name="autocomplete" type="boolean"/>
+            <column name="answer_concept" type="int"/>
+            <column name="show_previous_button" type="boolean"/>
+            <column name="number_of_visits" type="boolean"/>
+            <column defaultValueNumeric="0" name="creator" type="int">
+                <constraints nullable="false"/>
+            </column>
+            <column name="date_created" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column defaultValueBoolean="false" name="voided" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="voided_by" type="int"/>
+            <column name="date_voided" type="DATETIME"/>
+            <column name="void_reason" type="varchar(255)"/>
+            <column name="changed_by" type="int"/>
+            <column name="date_changed" type="DATETIME"/>
+            <column name="uuid" type="char(38)"/>
+        </createTable>
+        <addForeignKeyConstraint constraintName="bahmni_form_element_creator_fk"
+                                 baseTableName="bahmni_form_element" baseColumnNames="creator"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="bahmni_form_element_answer_concept_fk"
+                                 baseTableName="bahmni_form_element" baseColumnNames="answer_concept"
+                                 referencedTableName="concept"
+                                 referencedColumnNames="concept_id"/>
+        <addForeignKeyConstraint constraintName="bahmni_form_element_changed_by_fk"
+                                 baseTableName="bahmni_form_element" baseColumnNames="changed_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="bahmni_form_element_voided_by_fk"
+                                 baseTableName="bahmni_form_element" baseColumnNames="voided_by"
+                                 referencedTableName="users"
+                                 referencedColumnNames="user_id"/>
+        <addForeignKeyConstraint constraintName="bahmni_form_element_concept_set_fk"
+                                 baseTableName="bahmni_form_element" baseColumnNames="concept_set_id"
+                                 referencedTableName="concept_set"
+                                 referencedColumnNames="concept_set_id"/>
+        <addUniqueConstraint columnNames="uuid"
+                             constraintName="bahmni_form_element_uuid"
+                             tableName="bahmni_form_element"/>
+    </changeSet>
 </databaseChangeLog>

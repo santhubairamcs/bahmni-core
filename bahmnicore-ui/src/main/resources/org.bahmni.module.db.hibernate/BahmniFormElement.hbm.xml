@@ -1,0 +1,123 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.1//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping package="org.bahmni.module.bahmnicoreui.contract">
+
+    <class name="BahmniFormElement" table="bahmni_form_element" batch-size="50">
+        <!-- -->
+        <!--Caching-->
+        <!-- -->
+
+        <cache usage="read-only" include="all"/>
+
+        <!-- -->
+        <!--Properties-->
+        <!-- -->
+
+        <id name="bahmniFormElementId" type="java.lang.Integer"
+            column="bahmni_form_element_id"
+            unsaved-value="undefined">
+            <generator class="org.openmrs.api.db.hibernate.NativeIfNotAssignedIdentityGenerator"/>
+        </id>
+
+        <discriminator column="bahmni_form_element_id" insert="false"/>
+
+        <property name="multiple" type="java.lang.Integer"
+                  column="multiple"/>
+
+        <property name="conciseText" type="java.lang.Boolean">
+            <column name="concise_text" not-null="true" default="false"/>
+        </property>
+
+        <property name="durationRequired" type="java.lang.Boolean">
+            <column name="duration_required" not-null="true" default="false"/>
+        </property>
+
+        <property name="multiSelect" type="java.lang.Boolean">
+            <column name="multi_select" not-null="true" default="false"/>
+        </property>
+
+        <property name="computeDrugs" type="java.lang.Boolean">
+            <column name="compute_drugs" not-null="true" default="false"/>
+        </property>
+
+        <property name="allowAddMore" type="java.lang.Boolean">
+            <column name="allow_add_more" not-null="true" default="false"/>
+        </property>
+
+        <property name="freeTextAutocomplete" type="java.lang.Boolean">
+            <column name="free_text_autocomplete" not-null="true" default="false"/>
+        </property>
+
+        <property name="grid" type="java.lang.Boolean">
+            <column name="grid" not-null="true" default="false"/>
+        </property>
+
+        <property name="buttonSelect" type="java.lang.Boolean">
+            <column name="button_select" not-null="true" default="false"/>
+        </property>
+
+        <property name="required" type="java.lang.Boolean">
+            <column name="required" not-null="true" default="false"/>
+        </property>
+
+        <property name="autocomplete" type="java.lang.Boolean">
+            <column name="autocomplete" not-null="true" default="false"/>
+        </property>
+
+        <property name="showPreviousButton" type="java.lang.Boolean">
+            <column name="show_previous_button" not-null="true" default="false"/>
+        </property>
+
+        <property name="numberOfVisits" type="java.lang.Integer">
+            <column name="number_of_visits" not-null="false"/>
+        </property>
+
+        <property name="uuid" type="java.lang.String"
+                  column="uuid" length="38" unique="true"/>
+
+        <property name="voided" type="java.lang.Boolean"
+                  column="voided" length="1" not-null="true"/>
+        <property name="dateCreated" type="java.util.Date"
+
+                  column="date_created" not-null="true" length="19"/>
+
+        <property name="dateChanged" type="java.util.Date"
+                  column="date_changed" length="19"/>
+
+        <property name="voidReason" type="java.lang.String"
+                  column="void_reason" length="255"/>
+
+        <property name="dateVoided" type="java.util.Date"
+                  column="date_voided" length="19"/>
+
+        <!---->
+        <!--Foreign Key Mappings-->
+        <!---->
+
+        <many-to-one name="voidedBy" class="org.openmrs.User">
+            <column name="voided_by"/>
+        </many-to-one>
+
+        <many-to-one name="changedBy" class="org.openmrs.User"
+                     not-null="true">
+            <column name="changed_by"/>
+        </many-to-one>
+
+        <many-to-one name="creator" class="org.openmrs.User"
+                     not-null="true">
+            <column name="creator"/>
+        </many-to-one>
+
+        <many-to-one name="answerConcept" class="org.openmrs.Concept">
+            <column name="answer_concept"/>
+        </many-to-one>
+
+        <many-to-one name="conceptSetId" class="org.openmrs.ConceptSet">
+            <column name="concept_set_id"/>
+        </many-to-one>
+    </class>
+
+</hibernate-mapping>
