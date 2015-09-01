@@ -2,6 +2,8 @@ package org.bahmni.module.bahmnicore.dao.impl;
 
 import org.bahmni.module.bahmnicore.BaseIntegrationTest;
 import org.bahmni.module.bahmnicore.service.OrderService;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
 import org.junit.Test;
 import org.openmrs.*;
 import org.openmrs.api.ConceptService;
@@ -197,8 +199,8 @@ public class OrderDaoImplIT extends BaseIntegrationTest {
 
     @Test
     public void getAllOrdersForVisits_shouldReturnEmptyListWhenNoVisitsFound() {
-        assertThat(orderDao.getAllOrdersForVisits(null, null).size(), is(equalTo(0)));
-        assertThat(orderDao.getAllOrdersForVisits(null, new ArrayList<Visit>()).size(), is(equalTo(0)));
+        assertThat(orderDao.getAllOrdersForVisits(null, null, null).size(), is(equalTo(0)));
+        assertThat(orderDao.getAllOrdersForVisits(null, null, new ArrayList<Visit>()).size(), is(equalTo(0)));
     }
 
     @Test
@@ -208,7 +210,7 @@ public class OrderDaoImplIT extends BaseIntegrationTest {
         Patient patient = null;
         OrderType orderType = Context.getOrderService().getOrderType(15);
 
-        List<Order> allOrdersForVisits = orderDao.getAllOrdersForVisits(orderType, Arrays.asList(visit));
+        List<Order> allOrdersForVisits = orderDao.getAllOrdersForVisits(patient, orderType, Arrays.asList(visit));
 
         assertThat(allOrdersForVisits.size(), is(equalTo(2)));
 
