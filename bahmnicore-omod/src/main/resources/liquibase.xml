@@ -3185,4 +3185,235 @@
             <column name="date_created" valueComputed="now()"></column>
         </insert>
     </changeSet>
+
+    <changeSet id="bahmni-core-201518091751" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:clinical:treatmentTab'</sqlCheck>
+        </preConditions>
+        <comment>Adding Treatment Tab privilege</comment>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:clinical:treatmentTab"/>
+            <column name="description" value="Bahmni Treatment Tab Access Privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201518091801" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:clinical:ordersTab'</sqlCheck>
+        </preConditions>
+        <comment>Adding Orders Tab privilege</comment>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:clinical:ordersTab"/>
+            <column name="description" value="Bahmni Orders Tab Access Privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091321" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role where role='Consultation-Observation'</sqlCheck>
+        </preConditions>
+        <comment>Add role for consultation observation access</comment>
+        <sql>
+            INSERT INTO role (role, description) VALUES ('Consultation-Observation', 'Will have access to consultation observation');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091323" author="Sravanthi" context="rel0.76">
+        <comment>Add privileges for consultation observation</comment>
+        <sql>
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Observation', 'app:clinical:observationTab');
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Observation', 'app:clinical:retrospective');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091325" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role where role='Consultation-Diagnosis'</sqlCheck>
+        </preConditions>
+        <comment>Add role for consultation diagnosis access</comment>
+        <sql>
+            INSERT INTO role (role, description) VALUES ('Consultation-Diagnosis', 'Will have access to consultation diagnosis');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091327" author="Sravanthi" context="rel0.76">
+        <comment>Add privileges for consultation diagnosis</comment>
+        <sql>
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Diagnosis', 'app:clinical:diagnosisTab');
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Diagnosis', 'app:clinical:retrospective');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091329" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role where role='Consultation-Disposition'</sqlCheck>
+        </preConditions>
+        <comment>Add role for consultation disposition access</comment>
+        <sql>
+            INSERT INTO role (role, description) VALUES ('Consultation-Disposition', 'Will have access to consultation disposition');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091331" author="Sravanthi" context="rel0.76">
+        <comment>Add privileges for consultation disposition</comment>
+        <sql>
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Disposition', 'app:clinical:dispositionTab');
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Disposition', 'app:clinical:retrospective');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091333" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role where role='Consultation-Treatment'</sqlCheck>
+        </preConditions>
+        <comment>Add role for consultation treatment access</comment>
+        <sql>
+            INSERT INTO role (role, description) VALUES ('Consultation-Treatment', 'Will have access to consultation treatment');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091335" author="Sravanthi" context="rel0.76">
+        <comment>Add privileges for consultation treatment</comment>
+        <sql>
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Treatment', 'app:clinical:treatmentTab');
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Treatment', 'app:clinical:retrospective');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091337" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role where role='Consultation-Orders'</sqlCheck>
+        </preConditions>
+        <comment>Add role for consultation orders access</comment>
+        <sql>
+            INSERT INTO role (role, description) VALUES ('Consultation-Orders', 'Will have access to consultation orders');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-core-201521091339" author="Sravanthi" context="rel0.76">
+        <comment>Add privileges for consultation orders</comment>
+        <sql>
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Orders', 'app:clinical:ordersTab');
+            INSERT INTO role_privilege (role, privilege) VALUES ('Consultation-Orders', 'app:clinical:retrospective');
+        </sql>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091343" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:clinical:readOnly:observationTab'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:clinical:readOnly:observationTab"/>
+            <column name="description" value="Bahmni clinical app observation tab read only access privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091345" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:clinical:readOnly:diagnosisTab'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:clinical:readOnly:diagnosisTab"/>
+            <column name="description" value="Bahmni clinical app diagnosis tab read only access privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091347" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:clinical:readOnly:dispositionTab'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:clinical:readOnly:dispositionTab"/>
+            <column name="description" value="Bahmni clinical app disposition tab read only access privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091349" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:clinical:readOnly:treatmentTab'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:clinical:readOnly:treatmentTab"/>
+            <column name="description" value="Bahmni clinical app treatment tab read only access privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091351" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from privilege where privilege = 'app:clinical:readOnly:ordersTab'</sqlCheck>
+        </preConditions>
+        <insert tableName="privilege">
+            <column name="privilege" value="app:clinical:readOnly:ordersTab"/>
+            <column name="description" value="Bahmni clinical app orders tab read only access privilege"/>
+            <column name="uuid" valueComputed="uuid()"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091353" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role_privilege where privilege = 'app:clinical:observationTab' and role = 'Clinical:ReadOnly'</sqlCheck>
+        </preConditions>
+        <update tableName="role_privilege">
+            <column name="privilege" value="app:clinical:readOnly:observationTab"/>
+            <where>privilege = 'app:clinical:observationTab' and role = 'Clinical:ReadOnly'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091355" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role_privilege where privilege = 'app:clinical:diagnosisTab' and role = 'Clinical:ReadOnly'</sqlCheck>
+        </preConditions>
+        <update tableName="role_privilege">
+            <column name="privilege" value="app:clinical:readOnly:diagnosisTab"/>
+            <where>privilege = 'app:clinical:diagnosisTab' and role = 'Clinical:ReadOnly'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091357" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role_privilege where privilege = 'app:clinical:dispositionTab' and role = 'Clinical:ReadOnly'</sqlCheck>
+        </preConditions>
+        <update tableName="role_privilege">
+            <column name="privilege" value="app:clinical:readOnly:dispositionTab"/>
+            <where>privilege = 'app:clinical:dispositionTab' and role = 'Clinical:ReadOnly'</where>
+        </update>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091359" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role_privilege where privilege = 'app:clinical:readOnly:ordersTab' and role = 'Clinical:ReadOnly'</sqlCheck>
+        </preConditions>
+        <comment>Add orders tab read only privilege to Clinical:ReadOnly</comment>
+        <insert tableName="role_privilege">
+            <column name="role" value="Clinical:ReadOnly"/>
+            <column name="privilege" value="app:clinical:readOnly:ordersTab"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091401" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">SELECT count(*) from role_privilege privilege = 'app:clinical:readOnly:treatmentTab' and role = 'Clinical:ReadOnly'</sqlCheck>
+        </preConditions>
+        <comment>Add treatment tab read only privilege to Clinical:ReadOnly</comment>
+        <insert tableName="role_privilege">
+            <column name="role" value="Clinical:ReadOnly"/>
+            <column name="privilege" value="app:clinical:readOnly:treatmentTab"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="bahmni-clinical-201521091403" author="Sravanthi" context="rel0.76">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">select count(*) from role where role='Patient-Listing'</sqlCheck>
+        </preConditions>
+        <comment>Add Patient-Listing role</comment>
+        <sql>
+            INSERT INTO role (role, description) VALUES ('Patient-Listing', 'Will have access to all patient queues');
+        </sql>
+    </changeSet>
 </databaseChangeLog>
