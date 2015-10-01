@@ -19,6 +19,7 @@ public class BahmniEncounterTransaction {
     private List<BahmniDiagnosisRequest> bahmniDiagnoses = new ArrayList<>();
     private Collection<BahmniObservation> observations = new TreeSet<>();
     private List<AccessionNote> accessionNotes;
+    private Map<String,Object> extensions;
     private String encounterType;
     private String visitType;
     private String patientId;
@@ -291,6 +292,10 @@ public class BahmniEncounterTransaction {
 
     public void setReason(String reason) {
         this.reason = reason;
+    }
+
+    public void setExtensions(Map<String, Object> extensions) {
+        encounterTransaction.setExtensions(extensions);
     }
 }
 
