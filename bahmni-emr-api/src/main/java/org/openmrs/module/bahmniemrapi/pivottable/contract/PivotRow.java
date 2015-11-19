@@ -9,6 +9,7 @@ import java.util.Map;
 
 public class PivotRow {
     Map<String, ArrayList<BahmniObservation>> columns = new HashMap<>();
+    private String month;
 
     public void addColumn(String name, BahmniObservation bahmniObservation) {
         ArrayList<BahmniObservation> bahmniObs;
@@ -25,4 +26,7 @@ public class PivotRow {
         return columns;
     }
 
+    public void setMonth(String month) {
+        this.month = month;
+    }
 }
