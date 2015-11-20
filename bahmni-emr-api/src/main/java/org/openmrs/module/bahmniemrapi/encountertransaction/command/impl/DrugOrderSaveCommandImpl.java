@@ -94,7 +94,7 @@ public class DrugOrderSaveCommandImpl implements EncounterDataPreSaveCommand {
 
     private Date getExpectedStartDateForOrder(EncounterTransaction.DrugOrder order) {
         if( order.getScheduledDate() == null){
-            return new Date();
+            return order.getDateActivated();
         }
         return order.getScheduledDate();
     }

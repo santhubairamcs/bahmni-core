@@ -1,6 +1,7 @@
 package org.openmrs.module.bahmniemrapi.encountertransaction.command.impl;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.bahmni.test.properties.SystemPropertiesReader;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -14,6 +15,7 @@ import org.openmrs.OrderFrequency;
 import org.openmrs.api.ConceptService;
 import org.openmrs.module.bahmniemrapi.drugorder.DrugOrderUtil;
 import org.openmrs.module.bahmniemrapi.encountertransaction.contract.BahmniEncounterTransaction;
+import org.openmrs.module.bahmniemrapi.encountertransaction.utils.DateUtil;
 import org.openmrs.module.emrapi.encounter.builder.DrugOrderBuilder;
 import org.openmrs.module.emrapi.encounter.domain.EncounterTransaction;
 import org.openmrs.module.emrapi.encounter.service.OrderMetadataService;
@@ -37,6 +39,7 @@ public class DrugOrderSaveCommandImplTest {
     public static final String DAY_DURATION_UNIT = "Day";
     public static final String ONCE_A_DAY_CONCEPT_NAME = "Once A Day";
     public static final String SNOMED_CT_DAYS_CODE = "258703001";
+    public static final int day = 24 * 60 * 60 * 1000;
 
 
     DrugOrderSaveCommandImpl drugOrderSaveCommand;
@@ -69,7 +72,7 @@ public class DrugOrderSaveCommandImplTest {
     public void shouldSetDatesForDrugOrderConflictingWithCurrentDateOrders() {
         BahmniEncounterTransaction bahmniEncounterTransaction = new BahmniEncounterTransaction();
         Concept dayConcept = new Concept();
-        dayConcept.addConceptMapping(getConceptMap(Duration.SNOMED_CT_CONCEPT_SOURCE_HL7_CODE, Duration.SNOMED_CT_DAYS_CODE,"35543629-7d8c-11e1-909d-c80aa9edcf4e"));
+        dayConcept.addConceptMapping(getConceptMap(Duration.SNOMED_CT_CONCEPT_SOURCE_HL7_CODE, Duration.SNOMED_CT_DAYS_CODE, "35543629-7d8c-11e1-909d-c80aa9edcf4e"));
 
         when(conceptService.getConceptByName(DAY_DURATION_UNIT)).thenReturn(dayConcept);
         OrderFrequency orderFrequency = new OrderFrequency();
@@ -80,11 +83,13 @@ public class DrugOrderSaveCommandImplTest {
         List<EncounterTransaction.DrugOrder> drugOrders = new ArrayList<>();
         Date today = new Date();
         EncounterTransaction.DrugOrder drugOrder1 = new DrugOrderBuilder().withDrugUuid("drug-uuid1").withScheduledDate(null).withFrequency(DAY_DURATION_UNIT).build();
-
+        drugOrder1.setDateActivated(today);
         drugOrders.add(drugOrder1);
         EncounterTransaction.DrugOrder drugOrder2 = new DrugOrderBuilder().withDrugUuid("drug-uuid1").withScheduledDate(DateUtils.addDays(today, 10)).withFrequency(DAY_DURATION_UNIT).build();
+        drugOrder2.setDateActivated(today);
         drugOrders.add(drugOrder2);
         EncounterTransaction.DrugOrder drugOrder3 = new DrugOrderBuilder().withDrugUuid("drug-uuid1").withScheduledDate(DateUtils.addDays(today, 2)).withFrequency(DAY_DURATION_UNIT).build();
+        drugOrder3.setDateActivated(new Date(System.currentTimeMillis() - (day * 2)));
         drugOrders.add(drugOrder3);
         bahmniEncounterTransaction.setDrugOrders(drugOrders);
         BahmniEncounterTransaction updatedEncounterTransaction = drugOrderSaveCommand.update(bahmniEncounterTransaction);
@@ -117,11 +122,15 @@ public class DrugOrderSaveCommandImplTest {
         EncounterTransaction.DrugOrder drugOrder1 = new DrugOrderBuilder().withDrugUuid("drug-uuid1").withScheduledDate(null).withFrequency(DAY_DURATION_UNIT).build();
 
         drugOrders.add(drugOrder1);
+        drugOrder1.setDateActivated(today);
         EncounterTransaction.DrugOrder drugOrder2 = new DrugOrderBuilder().withDrugUuid("drug-uuid1").withScheduledDate(DateUtils.addDays(today, 10)).withFrequency(DAY_DURATION_UNIT).build();
+        drugOrder2.setDateActivated(today);
         drugOrders.add(drugOrder2);
         EncounterTransaction.DrugOrder drugOrder3 = new DrugOrderBuilder().withDrugUuid("drug-uuid1").withScheduledDate(DateUtils.addDays(today, 2)).withFrequency(DAY_DURATION_UNIT).build();
+        drugOrder3.setDateActivated(today);
         drugOrders.add(drugOrder3);
         EncounterTransaction.DrugOrder drugOrder4 = new DrugOrderBuilder().withDrugUuid("drug-uuid1").withScheduledDate(DateUtils.addDays(today, 4)).withFrequency(DAY_DURATION_UNIT).build();
+        drugOrder4.setDateActivated(new Date(System.currentTimeMillis()-day));
         drugOrders.add(drugOrder4);
         bahmniEncounterTransaction.setDrugOrders(drugOrders);
         BahmniEncounterTransaction updatedEncounterTransaction = drugOrderSaveCommand.update(bahmniEncounterTransaction);
